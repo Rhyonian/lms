@@ -32,6 +32,7 @@ services:
     build:
       context: ../..
       dockerfile: infra/docker/api.Dockerfile
+      target: dev
     env_file:
       - ../../apps/api/.env
     environment:
