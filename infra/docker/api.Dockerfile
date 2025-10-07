@@ -1,4 +1,26 @@
-# syntax=docker/dockerfile:1
-FROM alpine:3.19
+# build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+# adjust the csproj name if different
+COPY apps/api/*.csproj apps/api/
+RUN dotnet restore apps/api/*.csproj
+COPY apps/api/ apps/api/
+WORKDIR /src/apps/api
+RUN dotnet publish -c Release -o /out
+
+# production runtime (small)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-CMD ["sh", "-c", "echo 'API service container is ready. Override API_DOCKERFILE or API_CMD to run the real service.'; sleep infinity"]
+COPY --from=build /out .
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+# adjust DLL name if different
+ENTRYPOINT ["dotnet","Lms.Api.dll"]
+
+# development runtime (SDK inside for CLI)
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dev
+WORKDIR /app
+COPY --from=build /out .
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+ENTRYPOINT ["dotnet","Lms.Api.dll"]
