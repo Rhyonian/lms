@@ -29,39 +29,46 @@ services:
     volumes:
       - miniodata:/data
 
-  api:
-    build: ../../apps/api
-    env_file:
-      - ../../apps/api/.env
-    environment:
-      ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__Default: Host=postgres;Username=postgres;Password=postgres;Database=lms
-      STORAGE__ENDPOINT: http://minio:9000
-      STORAGE__ACCESS_KEY: admin
-      STORAGE__SECRET_KEY: password
-      STORAGE__BUCKET: scorm
-    depends_on:
-      - postgres
-      - redis
-      - minio
-    ports:
-      - "8080:8080"
+api:
+  build:
+    context: ../..          # repo root
+    dockerfile: infra/docker/api.Dockerfile
+  env_file:
+    - ../../apps/api/.env
+  environment:
+    ASPNETCORE_URLS: http://+:8080
+    ConnectionStrings__Default: Host=postgres;Username=postgres;Password=postgres;Database=lms
+    STORAGE__ENDPOINT: http://minio:9000
+    STORAGE__ACCESS_KEY: admin
+    STORAGE__SECRET_KEY: password
+    STORAGE__BUCKET: scorm
+  depends_on:
+    - postgres
+    - redis
+    - minio
+  ports:
+    - "8080:8080"
 
-  worker:
-    build: ../../apps/worker
-    env_file:
-      - ../../apps/worker/.env
-    depends_on:
-      - postgres
-      - redis
-      - minio
+web:
+  build:
+    context: ../..
+    dockerfile: infra/docker/web.Dockerfile
+  env_file:
+    - ../../apps/web/.env
+  ports:
+    - "5173:5173"
 
-  web:
-    build: ../../apps/web
-    env_file:
-      - ../../apps/web/.env
-    ports:
-      - "5173:5173"
+worker:
+  build:
+    context: ../..
+    dockerfile: infra/docker/worker.Dockerfile
+  env_file:
+    - ../../apps/worker/.env
+  depends_on:
+    - postgres
+    - redis
+    - minio
+
 
 volumes:
   pgdata:
