@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Analytics Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="/static/css/admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+    <script src="/static/js/admin_analytics.js" type="module" defer></script>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Learning Analytics</h1>
+        <p>Monitor course, group, and learner progress in real time.</p>
+      </header>
+
+      <section class="filters">
+        <form id="filters-form">
+          <div class="grid">
+            <label>
+              Course ID
+              <input type="number" id="filter-course" placeholder="All" min="1" />
+            </label>
+            <label>
+              Group ID
+              <input type="number" id="filter-group" placeholder="All" min="1" />
+            </label>
+            <label>
+              Learner ID
+              <input type="number" id="filter-learner" placeholder="All" min="1" />
+            </label>
+          </div>
+          <div class="grid">
+            <label>
+              Status
+              <select id="filter-status">
+                <option value="">All statuses</option>
+                <option value="completed">Completed</option>
+                <option value="in_progress">In progress</option>
+                <option value="not_started">Not started</option>
+                <option value="stalled">Stalled</option>
+              </select>
+            </label>
+            <label>
+              Start date
+              <input type="date" id="filter-start" />
+            </label>
+            <label>
+              End date
+              <input type="date" id="filter-end" />
+            </label>
+          </div>
+          <div class="actions">
+            <button type="submit">Apply filters</button>
+            <button type="reset" class="secondary">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="cards">
+        <article>
+          <header>
+            <h2>Course Progress Overview</h2>
+            <a id="download-course" class="contrast" href="#">Download CSV</a>
+          </header>
+          <canvas id="course-chart" height="160"></canvas>
+          <div class="table-wrapper">
+            <table id="course-table"></table>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h2>Group Progress</h2>
+            <a id="download-group" class="contrast" href="#">Download CSV</a>
+          </header>
+          <canvas id="group-chart" height="160"></canvas>
+          <div class="table-wrapper">
+            <table id="group-table"></table>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h2>Learner Detail</h2>
+            <a id="download-learner" class="contrast" href="#">Download CSV</a>
+          </header>
+          <canvas id="learner-chart" height="160"></canvas>
+          <div class="table-wrapper">
+            <table id="learner-table"></table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

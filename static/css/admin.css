@@ -1,0 +1,69 @@
+:root {
+  --card-padding: 1.5rem;
+}
+
+body {
+  background: #f8fafc;
+}
+
+header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.filters form {
+  margin-bottom: 2rem;
+}
+
+.filters .actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.cards {
+  display: grid;
+  gap: 2rem;
+}
+
+.cards article {
+  background: white;
+  padding: var(--card-padding);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgb(15 23 42 / 0.08);
+}
+
+.cards article header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cards canvas {
+  margin-block: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-wrapper table {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.table-wrapper th,
+.table-wrapper td {
+  white-space: nowrap;
+}
+
+@media (min-width: 992px) {
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .cards article {
+    min-height: 520px;
+  }
+}
