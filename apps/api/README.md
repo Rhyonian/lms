@@ -40,3 +40,6 @@ curl http://localhost:5000/me \
 # Logout (stateless)
 curl -X POST http://localhost:5000/auth/logout -i
 ```
+# Lms.Api
+
+ASP.NET Core 9 minimal API service for the LMS backend.
