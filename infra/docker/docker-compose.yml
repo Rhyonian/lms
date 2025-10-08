@@ -28,7 +28,7 @@ services:
     volumes:
       - miniodata:/data
 
-  api:
+    api:
     build:
       context: ../..
       dockerfile: infra/docker/api.Dockerfile
@@ -37,13 +37,16 @@ services:
       - ../../apps/api/.env
     environment:
       ASPNETCORE_URLS: http://+:8080
-      ConnectionStrings__Default: Host=postgres;Username=postgres;Password=postgres;Database=lms
+      ConnectionStrings__Default: "Data Source=/data/lms.db"
       STORAGE__ENDPOINT: http://minio:9000
       STORAGE__ACCESS_KEY: admin
       STORAGE__SECRET_KEY: password
       STORAGE__BUCKET: scorm
+      EF_MIGRATE_ON_STARTUP: "true"     # keep if you added migrate-on-startup
+      EF_SEED_ON_STARTUP: "true"        # keep if you added seeding
+    volumes:
+      - apidata:/data
     depends_on:
-      - postgres
       - redis
       - minio
     ports:
@@ -72,3 +75,4 @@ services:
 volumes:
   pgdata:
   miniodata:
+  apidata:
