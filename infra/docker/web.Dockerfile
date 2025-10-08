@@ -1,4 +1,11 @@
-# syntax=docker/dockerfile:1
-FROM alpine:3.19
+FROM node:20-alpine
+
 WORKDIR /app
-CMD ["sh", "-c", "echo 'Web service container is ready. Override WEB_DOCKERFILE or WEB_CMD to run the real frontend.'; sleep infinity"]
+COPY apps/web/package*.json apps/web/
+WORKDIR /app/apps/web
+RUN npm ci || npm install
+
+COPY apps/web/ .
+
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
